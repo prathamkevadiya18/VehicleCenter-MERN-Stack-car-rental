@@ -1,0 +1,46 @@
+{
+  "name": "car-rental-fullstack",
+  "version": "1.0.0",
+  "description": "Full-stack Vehicle Center Application with React frontend and Node.js backend",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:frontend": "cd frontend && npm start",
+    "dev:backend": "cd backend && npm run dev",
+    "start": "concurrently \"npm run start:backend\" \"npm run start:frontend\"",
+    "start:frontend": "cd frontend && npm start",
+    "start:backend": "cd backend && npm start",
+    "build": "cd frontend && npm run build",
+    "install:frontend": "cd frontend && npm install",
+    "install:backend": "cd backend && npm install",
+    "install:all": "npm run install:frontend && npm run install:backend",
+    "seed": "cd backend && npm run seed",
+    "create-admin": "cd backend && npm run create-admin",
+    "test": "npm run test:frontend",
+    "test:frontend": "cd frontend && npm test",
+    "clean": "rimraf frontend/node_modules backend/node_modules node_modules",
+    "setup": "npm install && npm run install:all"
+  },
+  "keywords": [
+    "car-rental",
+    "react",
+    "nodejs",
+    "mongodb",
+    "express",
+    "fullstack"
+  ],
+  "author": "Vehicle Center Team",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.0",
+    "rimraf": "^5.0.1"
+  },
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
+  }
+}
