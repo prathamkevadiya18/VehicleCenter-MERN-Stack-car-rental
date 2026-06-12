@@ -27,6 +27,50 @@ The project is structured as a **Monorepo** with a **React JS** frontend and a *
 *   **Rate Limiting**: Protection against DDoS and brute-force attacks via `express-rate-limit`.
 *   **Security Headers**: Enhanced application security using `helmet` middleware.
 
+
+---
+
+## 🔄 Application Workflow
+
+The following flowchart describes the business logic and user/admin workflow of the Vehicle Center application:
+
+```mermaid
+graph TD
+    %% Define styles
+    classDef user fill:#e1f5fe,stroke:#0288d1,stroke-width:2px;
+    classDef admin fill:#efebe9,stroke:#5d4037,stroke-width:2px;
+    classDef system fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px;
+    classDef decision fill:#fff9c4,stroke:#fbc02d,stroke-width:2px;
+
+    subgraph Customer_Journey [Customer Journey]
+        A[Browse Home / Cars List]:::user --> B{Filter by Category / Location}:::decision
+        B -->|Select Filter| C[Select Car & View Details]:::user
+        C --> D[Click Book Now]:::user
+        D --> E{User Logged In?}:::decision
+        E -->|No| F[Login / Register]:::user
+        F --> E
+        E -->|Yes| G[Fill Booking Form & Dates]:::user
+        G --> H[Submit Reservation]:::user
+        H --> I[Booking Status: Pending]:::system
+    end
+
+    subgraph Admin_Operations [Admin Operations]
+        J[Admin Login]:::admin --> K[Admin Dashboard]:::admin
+        K --> L[Manage Bookings]:::admin
+        K --> M[Manage Cars Fleet]:::admin
+        M -->|Add/Edit Cars| A
+        
+        I --> L
+        L --> N{Decide Action}:::decision
+        N -->|Approve| O[Booking Status: Confirmed]:::system
+        N -->|Reject/Cancel| P[Booking Status: Cancelled]:::system
+        N -->|Complete| Q[Booking Status: Completed]:::system
+        
+        O --> R[Car Availability set to Booked]:::system
+        Q --> S[Car Availability set to Available]:::system
+    end
+```
+
 ---
 
 ## 🛠️ Technology Stack
