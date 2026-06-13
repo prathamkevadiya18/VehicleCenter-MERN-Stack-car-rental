@@ -82,23 +82,73 @@ function BookCar() {
     setZipCode(e.target.value);
   };
 
-  // open modal when all inputs are fulfilled
-  const openModal = (e) => {
+  // open modal when all inputs are fulfilled and availability is verified
+  const openModal = async (e) => {
     e.preventDefault();
+    
+    // If the modal is already open, close it and return immediately
+    if (modal) {
+      setModal(false);
+      return;
+    }
+
     const errorMsg = document.querySelector(".error-message");
-    if (
-      pickUp === "" ||
-      dropOff === "" ||
-      pickTime === "" ||
-      dropTime === "" ||
-      carType === ""
-    ) {
+    errorMsg.style.display = "none";
+
+    const isAllFieldsFilled = 
+      pickUp !== "" && pickUp !== "Select pick up location" &&
+      dropOff !== "" && dropOff !== "Select drop off location" &&
+      pickTime !== "" &&
+      dropTime !== "" &&
+      carType !== "" && carType !== "Select your car type" &&
+      fuelType !== "" && fuelType !== "Select fuel type" &&
+      pickUpTime !== "" &&
+      dropOffTime !== "";
+
+    if (!isAllFieldsFilled) {
+      errorMsg.innerHTML = 'All fields required! <i class="fa-solid fa-xmark"></i>';
       errorMsg.style.display = "flex";
-    } else {
-      setModal(!modal);
+      const closeBtn = errorMsg.querySelector(".fa-xmark");
+      if (closeBtn) {
+        closeBtn.onclick = () => { errorMsg.style.display = "none"; };
+      }
+      return;
+    }
+
+    try {
+      // Query API for available cars
+      const res = await carsAPI.getAvailableCars(pickUp, pickTime, dropTime);
+      const availableCars = res?.cars || [];
+      
+      const isAvailable = availableCars.some(c => {
+        // Compare brand & model / name
+        const dbName = c.name;
+        if (carType === "VW Golf 6" && dbName === "Golf 6") return true;
+        return dbName === carType;
+      });
+
+      if (!isAvailable) {
+        errorMsg.innerHTML = 'Car not available! <i class="fa-solid fa-xmark"></i>';
+        errorMsg.style.display = "flex";
+        const closeBtn = errorMsg.querySelector(".fa-xmark");
+        if (closeBtn) {
+          closeBtn.onclick = () => { errorMsg.style.display = "none"; };
+        }
+        return;
+      }
+
+      // If available, proceed to open modal
+      setModal(true);
       const modalDiv = document.querySelector(".booking-modal");
-      modalDiv.scroll(0, 0);
-      errorMsg.style.display = "none";
+      if (modalDiv) modalDiv.scroll(0, 0);
+    } catch (err) {
+      console.error("Availability check failed:", err);
+      errorMsg.innerHTML = 'Error checking car availability. Please try again. <i class="fa-solid fa-xmark"></i>';
+      errorMsg.style.display = "flex";
+      const closeBtn = errorMsg.querySelector(".fa-xmark");
+      if (closeBtn) {
+        closeBtn.onclick = () => { errorMsg.style.display = "none"; };
+      }
     }
   };
 

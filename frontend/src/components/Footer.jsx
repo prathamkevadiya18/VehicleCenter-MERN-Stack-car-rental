@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 function Footer() {
   return (
     <>
@@ -9,7 +11,7 @@ function Footer() {
                 <span>Vehicle Center</span> 
               </li>
               <li>
-                We offers a big range of vehicles for all your driving needs. We
+                We offer a wide range of vehicles for all your driving needs. We
                 have the perfect car to meet your needs.
               </li>
               <li>
@@ -34,10 +36,10 @@ function Footer() {
 
             <ul className="footer-content__2">
               <li>Company</li>
-              <li>Gallery</li>
-              <li>Careers</li>
-              <li>Blog</li>
-              <li>How we work</li>
+              <li><Link to="/models">Gallery</Link></li>
+              <li><Link to="/about">Careers</Link></li>
+              <li><Link to="/testimonials">Blog</Link></li>
+              <li><Link to="/about">How we work</Link></li>
             </ul>
 
             <ul className="footer-content__2">
@@ -50,7 +52,7 @@ function Footer() {
             <ul className="footer-content__2">
               <li>Subscription</li>
               <li>
-                <p>Subscribe your Email address for latest news & updates.</p>
+                <p>Subscribe to our newsletter for the latest news & updates.</p>
               </li>
               <li>
                 <input type="email" placeholder="Enter Email Address"></input>
