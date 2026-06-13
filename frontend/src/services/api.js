@@ -127,6 +127,15 @@ export const authAPI = {
       body: JSON.stringify(passwordData),
     });
   },
+
+  // Reset password (forgot password)
+  resetPassword: async (resetData) => {
+    return apiRequest('/auth/reset-password', {
+      method: 'POST',
+      body: JSON.stringify(resetData),
+      auth: false,
+    });
+  },
 };
 
 // Cars API

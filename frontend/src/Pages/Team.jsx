@@ -14,13 +14,13 @@ function Team() {
     { img: Person3, name: "Briana Ross", job: "Photographer" },
     { img: Person4, name: "Lauren Rivera", job: "Car Detailist" },
     { img: Person5, name: "Martin Rizz", job: "Mechanic" },
-    { img: Person6, name: "Caitlyn Hunt", job: "Menager" },
+    { img: Person6, name: "Caitlyn Hunt", job: "Manager" },
   ];
   return (
     <>
       <section className="team-page">
         <HeroPages name="Our Team" />
-        <div className="cotnainer">
+        <div className="container">
           <div className="team-container">
             {teamPpl.map((ppl, id) => (
               <div key={id} className="team-container__box">
