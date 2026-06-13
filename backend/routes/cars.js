@@ -4,6 +4,7 @@ const { protect, authorize, optionalAuth } = require('../middleware/auth');
 const router = express.Router();
 const multer = require('multer');
 const path = require('path');
+const { autoCompleteBookings } = require('../utils/bookingHelper');
 const fs = require('fs');
 
 // Ensure uploads directory exists
@@ -55,6 +56,7 @@ router.post('/upload', protect, authorize('admin'), upload.single('image'), asyn
 // @access  Public
 router.get('/', optionalAuth, async (req, res) => {
   try {
+    await autoCompleteBookings();
     const {
       category,
       fuelType,
@@ -77,7 +79,7 @@ router.get('/', optionalAuth, async (req, res) => {
     if (location) query['availability.availableLocations'] = location;
     if (available === 'true') {
       query['availability.isAvailable'] = true;
-      query['availability.isUnderMaintenance'] = false;
+      query['availability.maintenanceSchedule.isUnderMaintenance'] = false;
     }
 
     // Price range filter
@@ -257,6 +259,7 @@ router.delete('/:id', protect, authorize('admin'), async (req, res) => {
 // @access  Public
 router.get('/available/:location', async (req, res) => {
   try {
+    await autoCompleteBookings();
     const { location } = req.params;
     const { startDate, endDate } = req.query;
 
