@@ -125,7 +125,7 @@ const carSchema = new mongoose.Schema({
 // Virtual for availability status
 carSchema.virtual('availabilityStatus').get(function() {
   if (!this.isActive) return 'Inactive';
-  if (this.availability.isUnderMaintenance) return 'Under Maintenance';
+  if (this.availability.maintenanceSchedule?.isUnderMaintenance) return 'Under Maintenance';
   if (!this.availability.isAvailable) return 'Booked';
   return 'Available';
 });
@@ -144,7 +144,7 @@ carSchema.statics.findAvailable = function(location, startDate, endDate) {
   return this.find({
     isActive: true,
     'availability.isAvailable': true,
-    'availability.isUnderMaintenance': false,
+    'availability.maintenanceSchedule.isUnderMaintenance': false,
     'availability.availableLocations': location
   });
 };

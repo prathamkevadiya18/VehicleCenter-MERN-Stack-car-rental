@@ -8,6 +8,7 @@ const Notification = require('../models/Notification');
 const backupManager = require('../utils/backupManager');
 const maintenanceManager = require('../utils/maintenanceManager');
 const { protect, authorize } = require('../middleware/auth');
+const { autoCompleteBookings } = require('../utils/bookingHelper');
 const router = express.Router();
 
 // All routes are protected and require admin role
@@ -19,6 +20,7 @@ router.use(authorize('admin'));
 // @access  Private/Admin
 router.get('/dashboard', async (req, res) => {
   try {
+    await autoCompleteBookings();
     // Get booking statistics
     const bookingStats = await Booking.aggregate([
       {
@@ -35,7 +37,7 @@ router.get('/dashboard', async (req, res) => {
     const availableCars = await Car.countDocuments({ 
       isActive: true, 
       'availability.isAvailable': true,
-      'availability.isUnderMaintenance': false
+      'availability.maintenanceSchedule.isUnderMaintenance': false
     });
 
     // Format booking stats
@@ -96,6 +98,7 @@ router.get('/dashboard', async (req, res) => {
 // @access  Private/Admin
 router.get('/bookings', async (req, res) => {
   try {
+    await autoCompleteBookings();
     const { status, page = 1, limit = 10 } = req.query;
 
     let query = {};
@@ -137,6 +140,7 @@ router.get('/bookings', async (req, res) => {
 // @access  Private/Admin
 router.put('/bookings/:id/status', async (req, res) => {
   try {
+    await autoCompleteBookings();
     const { status: inputStatus, adminNotes } = req.body;
 
     // Validate and normalize status
@@ -175,6 +179,19 @@ router.put('/bookings/:id/status', async (req, res) => {
         success: false,
         message: 'Booking not found'
       });
+    }
+
+    // Toggle car availability depending on new status
+    if (booking.car) {
+      const car = await Car.findById(booking.car._id || booking.car);
+      if (car) {
+        if (normalizedStatus === 'Completed' || normalizedStatus === 'Cancelled') {
+          car.availability.isAvailable = true;
+        } else if (normalizedStatus === 'Confirmed' || normalizedStatus === 'Pending') {
+          car.availability.isAvailable = false;
+        }
+        await car.save();
+      }
     }
 
     res.status(200).json({
@@ -401,7 +418,9 @@ router.post('/cars', async (req, res) => {
       isActive: true,
       availability: {
         isAvailable: available,
-        isUnderMaintenance: false
+        maintenanceSchedule: {
+          isUnderMaintenance: false
+        }
       },
       features: [],
       images: [] // For now, we'll handle image upload separately
@@ -443,7 +462,7 @@ router.put('/cars/:id/availability', async (req, res) => {
       req.params.id,
       { 
         'availability.isAvailable': isAvailable,
-        'availability.isUnderMaintenance': isUnderMaintenance
+        'availability.maintenanceSchedule.isUnderMaintenance': isUnderMaintenance
       },
       { new: true, runValidators: true }
     );
@@ -742,7 +761,7 @@ router.get('/dashboard/comprehensive', async (req, res) => {
     const availableCars = await Car.countDocuments({ 
       isActive: true, 
       'availability.isAvailable': true,
-      'availability.isUnderMaintenance': false
+      'availability.maintenanceSchedule.isUnderMaintenance': false
     });
 
     // Get system health

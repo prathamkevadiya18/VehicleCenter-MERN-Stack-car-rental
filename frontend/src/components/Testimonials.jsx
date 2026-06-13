@@ -11,7 +11,7 @@ function Testimonials() {
               <h4>Reviewed by People</h4>
               <h2>Client's Testimonials</h2>
               <p>
-                Discover the positive impact we've made on the our clients by
+                Discover the positive impact we've made on our clients by
                 reading through their testimonials. Our clients have experienced
                 our service and results, and they're eager to share their
                 positive experiences with you.

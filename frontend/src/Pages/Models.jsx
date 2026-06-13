@@ -37,16 +37,16 @@ function Models() {
                   </div>
                   <div className="models-div__box__descr__name-price__details">
                     <span>
-                      <i className="fa-solid fa-car-side"></i> &nbsp; Audi
+                      <i className="fa-solid fa-car"></i> &nbsp; Audi
                     </span>
                     <span style={{ textAlign: "right" }}>
-                      4/5 &nbsp; <i className="fa-solid fa-car-side"></i>
+                      4/5 &nbsp; <i className="fa-solid fa-users"></i>
                     </span>
                     <span>
-                      <i className="fa-solid fa-car-side"></i> &nbsp; Manual
+                      <i className="fa-solid fa-gear"></i> &nbsp; Manual
                     </span>
                     <span style={{ textAlign: "right" }}>
-                      Diesel &nbsp; <i className="fa-solid fa-car-side"></i>
+                      Gasoline &nbsp; <i className="fa-solid fa-gas-pump"></i>
                     </span>
                   </div>
                   <div className="models-div__box__descr__name-price__btn">
@@ -80,16 +80,16 @@ function Models() {
                   </div>
                   <div className="models-div__box__descr__name-price__details">
                     <span>
-                      <i className="fa-solid fa-car-side"></i> &nbsp; VW
+                      <i className="fa-solid fa-car"></i> &nbsp; VW
                     </span>
                     <span style={{ textAlign: "right" }}>
-                      4/5 &nbsp; <i className="fa-solid fa-car-side"></i>
+                      4/5 &nbsp; <i className="fa-solid fa-users"></i>
                     </span>
                     <span>
-                      <i className="fa-solid fa-car-side"></i> &nbsp; Manual
+                      <i className="fa-solid fa-gear"></i> &nbsp; Manual
                     </span>
                     <span style={{ textAlign: "right" }}>
-                      Diesel &nbsp; <i className="fa-solid fa-car-side"></i>
+                      Diesel &nbsp; <i className="fa-solid fa-gas-pump"></i>
                     </span>
                   </div>
                   <div className="models-div__box__descr__name-price__btn">
@@ -107,7 +107,7 @@ function Models() {
                 <div className="models-div__box__descr">
                   <div className="models-div__box__descr__name-price">
                     <div className="models-div__box__descr__name-price__name">
-                      <p>Toyota</p>
+                      <p>Toyota Camry</p>
                       <span>
                         <i className="fa-solid fa-star"></i>
                         <i className="fa-solid fa-star"></i>
@@ -123,16 +123,16 @@ function Models() {
                   </div>
                   <div className="models-div__box__descr__name-price__details">
                     <span>
-                      <i className="fa-solid fa-car-side"></i> &nbsp; Camry
+                      <i className="fa-solid fa-car"></i> &nbsp; Toyota
                     </span>
                     <span style={{ textAlign: "right" }}>
-                      4/5 &nbsp; <i className="fa-solid fa-car-side"></i>
+                      4/5 &nbsp; <i className="fa-solid fa-users"></i>
                     </span>
                     <span>
-                      <i className="fa-solid fa-car-side"></i> &nbsp; Manual
+                      <i className="fa-solid fa-gear"></i> &nbsp; Automatic
                     </span>
                     <span style={{ textAlign: "right" }}>
-                      Diesel &nbsp; <i className="fa-solid fa-car-side"></i>
+                      Hybrid &nbsp; <i className="fa-solid fa-gas-pump"></i>
                     </span>
                   </div>
                   <div className="models-div__box__descr__name-price__btn">
@@ -166,16 +166,16 @@ function Models() {
                   </div>
                   <div className="models-div__box__descr__name-price__details">
                     <span>
-                      <i className="fa-solid fa-car-side"></i> &nbsp; ModernLine
+                      <i className="fa-solid fa-car"></i> &nbsp; BMW
                     </span>
                     <span style={{ textAlign: "right" }}>
-                      4/5 &nbsp; <i className="fa-solid fa-car-side"></i>
+                      4/5 &nbsp; <i className="fa-solid fa-users"></i>
                     </span>
                     <span>
-                      <i className="fa-solid fa-car-side"></i> &nbsp; Manual
+                      <i className="fa-solid fa-gear"></i> &nbsp; Manual
                     </span>
                     <span style={{ textAlign: "right" }}>
-                      Diesel &nbsp; <i className="fa-solid fa-car-side"></i>
+                      Diesel &nbsp; <i className="fa-solid fa-gas-pump"></i>
                     </span>
                   </div>
                   <div className="models-div__box__descr__name-price__btn">
@@ -193,7 +193,7 @@ function Models() {
                 <div className="models-div__box__descr">
                   <div className="models-div__box__descr__name-price">
                     <div className="models-div__box__descr__name-price__name">
-                      <p>Mercedes</p>
+                      <p>Mercedes-Benz GLK</p>
                       <span>
                         <i className="fa-solid fa-star"></i>
                         <i className="fa-solid fa-star"></i>
@@ -209,16 +209,16 @@ function Models() {
                   </div>
                   <div className="models-div__box__descr__name-price__details">
                     <span>
-                      <i className="fa-solid fa-car-side"></i> &nbsp; Benz GLK
+                      <i className="fa-solid fa-car"></i> &nbsp; Mercedes
                     </span>
                     <span style={{ textAlign: "right" }}>
-                      4/5 &nbsp; <i className="fa-solid fa-car-side"></i>
+                      4/5 &nbsp; <i className="fa-solid fa-users"></i>
                     </span>
                     <span>
-                      <i className="fa-solid fa-car-side"></i> &nbsp; Manual
+                      <i className="fa-solid fa-gear"></i> &nbsp; Manual
                     </span>
                     <span style={{ textAlign: "right" }}>
-                      Diesel &nbsp; <i className="fa-solid fa-car-side"></i>
+                      Diesel &nbsp; <i className="fa-solid fa-gas-pump"></i>
                     </span>
                   </div>
                   <div className="models-div__box__descr__name-price__btn">
@@ -236,7 +236,7 @@ function Models() {
                 <div className="models-div__box__descr">
                   <div className="models-div__box__descr__name-price">
                     <div className="models-div__box__descr__name-price__name">
-                      <p>VW Passat</p>
+                      <p>VW Passat CC</p>
                       <span>
                         <i className="fa-solid fa-star"></i>
                         <i className="fa-solid fa-star"></i>
@@ -252,16 +252,16 @@ function Models() {
                   </div>
                   <div className="models-div__box__descr__name-price__details">
                     <span>
-                      <i className="fa-solid fa-car-side"></i> &nbsp; CC
+                      <i className="fa-solid fa-car"></i> &nbsp; VW
                     </span>
                     <span style={{ textAlign: "right" }}>
-                      4/5 &nbsp; <i className="fa-solid fa-car-side"></i>
+                      4/5 &nbsp; <i className="fa-solid fa-users"></i>
                     </span>
                     <span>
-                      <i className="fa-solid fa-car-side"></i> &nbsp; Manual
+                      <i className="fa-solid fa-gear"></i> &nbsp; Automatic
                     </span>
                     <span style={{ textAlign: "right" }}>
-                      Diesel &nbsp; <i className="fa-solid fa-car-side"></i>
+                      Gasoline &nbsp; <i className="fa-solid fa-gas-pump"></i>
                     </span>
                   </div>
                   <div className="models-div__box__descr__name-price__btn">

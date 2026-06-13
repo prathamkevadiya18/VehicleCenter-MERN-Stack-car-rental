@@ -5,7 +5,7 @@ import CarToyota from "../images/cars-big/toyotacamry.jpg";
 import CarBmw from "../images/cars-big/bmw320.jpg";
 import CarMercedes from "../images/cars-big/benz.jpg";
 import CarPassat from "../images/cars-big/passatcc.jpg";
-import { adminAPI, carsAPI } from '../services/api';
+import { adminAPI, carsAPI, authAPI, apiUtils } from '../services/api';
 import './Admin.css';
 
 function SectionHeader({ title, subtitle }) {
@@ -158,6 +158,7 @@ function Tabs({ active, onChange }) {
     </div>
   );
 }
+
 function Admin() {
   const [activeTab, setActiveTab] = useState('dashboard');
 
@@ -456,7 +457,6 @@ function Admin() {
             { key: 'bookings', label: 'Bookings', icon: 'fa-receipt' },
             { key: 'users', label: 'Users', icon: 'fa-users' },
             { key: 'cars', label: 'Cars', icon: 'fa-car' },
-           
           ].map(t => (
             <button
               key={t.key}
@@ -466,6 +466,26 @@ function Admin() {
               <i className={`fa-solid ${t.icon}`} /> {t.label}
             </button>
           ))}
+          <button
+            onClick={() => apiUtils.logout()}
+            style={{
+              background: 'rgba(239, 68, 68, 0.1)',
+              color: '#ef4444',
+              borderColor: 'rgba(239, 68, 68, 0.2)',
+              marginTop: '10px',
+              transition: 'all 0.2s ease',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = '#ef4444';
+              e.currentTarget.style.color = '#fff';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'rgba(239, 68, 68, 0.1)';
+              e.currentTarget.style.color = '#ef4444';
+            }}
+          >
+            <i className="fa-solid fa-right-from-bracket" /> Logout
+          </button>
         </nav>
       </aside>
       <main className="admin-main">

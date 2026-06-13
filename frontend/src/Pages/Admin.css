@@ -4,8 +4,7 @@
   display: grid;
   grid-template-columns: 260px 1fr;
   background: linear-gradient(135deg, #f8fafc 0%, #eef2f7 100%);
-  /* push content below the site's fixed navbar */
-  padding-top: 140px;
+  padding-top: 0;
 }
 
 .admin-sidebar {

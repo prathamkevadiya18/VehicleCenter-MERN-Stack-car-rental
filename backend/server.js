@@ -6,11 +6,19 @@ const rateLimit = require('express-rate-limit');
 const path = require('path');
 const connectDB = require('./config/database');
 require('dotenv').config();
+const { autoCompleteBookings } = require('./utils/bookingHelper');
 
 const app = express();
 
+// Trust proxy settings for production (e.g. Render, AWS, Heroku, Cloudflare, etc.)
+app.set('trust proxy', 1);
+
 // Security middleware
 app.use(helmet());
+
+// Serve static files for uploads (images) BEFORE rate limiters so they are not throttled
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 // CORS configuration: allow common local dev origins and configured FRONTEND_URL
 const allowedOrigins = [
   process.env.FRONTEND_URL,
@@ -40,32 +48,34 @@ app.use(cors({
   optionsSuccessStatus: 204
 }));
 
-// Rate limiting
-const limiter = rateLimit({
+// Rate limiters for production scalability and protection
+const apiLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // limit each IP to 100 requests per windowMs
+  max: 500, // limit each IP to 500 requests per 15 mins for general API
   message: 'Too many requests from this IP, please try again later.'
 });
-app.use(limiter);
+
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 30, // limit each IP to 30 authentication requests per 15 mins
+  message: 'Too many login or registration attempts, please try again later.'
+});
 
 // Body parsing middleware
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
-// Static files for uploads (images)
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-
 // Connect to MongoDB
 connectDB();
 
 // Routes
-app.use('/api/auth', require('./routes/auth'));
-app.use('/api/bookings', require('./routes/bookings'));
-app.use('/api/cars', require('./routes/cars'));
-app.use('/api/admin', require('./routes/admin'));
-app.use('/api/admin/system-settings', require('./routes/systemSettings'));
-app.use('/api/admin/system-logs', require('./routes/systemLogs'));
-app.use('/api/admin/notifications', require('./routes/notifications'));
+app.use('/api/auth', authLimiter, require('./routes/auth'));
+app.use('/api/bookings', apiLimiter, require('./routes/bookings'));
+app.use('/api/cars', apiLimiter, require('./routes/cars'));
+app.use('/api/admin', apiLimiter, require('./routes/admin'));
+app.use('/api/admin/system-settings', apiLimiter, require('./routes/systemSettings'));
+app.use('/api/admin/system-logs', apiLimiter, require('./routes/systemLogs'));
+app.use('/api/admin/notifications', apiLimiter, require('./routes/notifications'));
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
@@ -100,6 +110,12 @@ app.listen(PORT, () => {
   console.log(`🚗 Vehicle Center Backend Server running on port ${PORT}`);
   console.log(`📱 Frontend URL: ${process.env.FRONTEND_URL || 'http://localhost:4000'}`);
   console.log(`🗄️  Database: ${process.env.MONGO_URI || 'mongodb://localhost:27017/car-rental'}`);
+  
+  // Clean up and complete any expired bookings on start
+  autoCompleteBookings();
+
+  // Run periodic cleanup every 60 seconds
+  setInterval(autoCompleteBookings, 60000);
 });
 
 module.exports = app;

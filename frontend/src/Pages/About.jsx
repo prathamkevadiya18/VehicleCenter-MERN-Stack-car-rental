@@ -22,11 +22,7 @@ function About() {
               <h1>About Company</h1>
               <h2>You start the engine and your adventure begins</h2>
               <p>
-                Certain but she but shyness why cottage. Guy the put instrument
-                sir entreaties affronting. Pretended exquisite see cordially the
-                you. Weeks quiet do vexed or whose. Motionless if no to
-                affronting imprudence no precaution. My indulged as disposal
-                strongly attended.
+                Welcome to Vehicle Center, your premier destination for high-quality and reliable vehicle rentals. We are committed to providing you with an exceptional renting experience by offering a diverse fleet of well-maintained vehicles, ranging from compact city hatchbacks to luxurious sedans and spacious SUVs. Whether you are planning a weekend getaway, a business trip, or a family adventure, our seamless booking process and dedicated team ensure you start your journey with complete peace of mind.
               </p>
               <div className="about-main__text__icons">
                 <div className="about-main__text__icons__box">

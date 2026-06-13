@@ -2,6 +2,7 @@ const express = require('express');
 const Booking = require('../models/Booking');
 const Car = require('../models/Car');
 const { protect, authorize } = require('../middleware/auth');
+const { autoCompleteBookings } = require('../utils/bookingHelper');
 const router = express.Router();
 
 // @desc    Create new booking
@@ -9,6 +10,7 @@ const router = express.Router();
 // @access  Private
 router.post('/', protect, async (req, res) => {
   try {
+    await autoCompleteBookings();
     const {
       carType,
       pickUp,
@@ -114,7 +116,7 @@ router.post('/', protect, async (req, res) => {
     }
 
     // Check car availability
-    if (!car.availability.isAvailable || car.availability.isUnderMaintenance) {
+    if (!car.availability.isAvailable || car.availability.maintenanceSchedule?.isUnderMaintenance) {
       return res.status(400).json({
         success: false,
         message: 'Car is not available for booking'
@@ -148,6 +150,10 @@ router.post('/', protect, async (req, res) => {
 
     // Populate the booking with car and user details
     await booking.populate('car user');
+
+    // Update car availability to false
+    car.availability.isAvailable = false;
+    await car.save();
 
     res.status(201).json({
       success: true,
@@ -184,6 +190,7 @@ router.post('/', protect, async (req, res) => {
 // @access  Private
 router.get('/', protect, async (req, res) => {
   try {
+    await autoCompleteBookings();
     const bookings = await Booking.find({ user: req.user._id })
       .populate('car', 'name model brand images')
       .sort({ createdAt: -1 });
@@ -209,6 +216,7 @@ router.get('/', protect, async (req, res) => {
 // @access  Private
 router.get('/:id', protect, async (req, res) => {
   try {
+    await autoCompleteBookings();
     const booking = await Booking.findById(req.params.id)
       .populate('car user');
 
@@ -247,6 +255,7 @@ router.get('/:id', protect, async (req, res) => {
 // @access  Private
 router.put('/:id', protect, async (req, res) => {
   try {
+    await autoCompleteBookings();
     let booking = await Booking.findById(req.params.id);
 
     if (!booking) {
@@ -277,6 +286,20 @@ router.put('/:id', protect, async (req, res) => {
       runValidators: true
     }).populate('car user');
 
+    // If status changed in the update, sync car availability
+    if (req.body.status && booking.car) {
+      const normalizedStatus = req.body.status.charAt(0).toUpperCase() + req.body.status.slice(1).toLowerCase();
+      const car = await Car.findById(booking.car._id || booking.car);
+      if (car) {
+        if (normalizedStatus === 'Completed' || normalizedStatus === 'Cancelled') {
+          car.availability.isAvailable = true;
+        } else if (normalizedStatus === 'Confirmed' || normalizedStatus === 'Pending') {
+          car.availability.isAvailable = false;
+        }
+        await car.save();
+      }
+    }
+
     res.status(200).json({
       success: true,
       message: 'Booking updated successfully',
@@ -298,6 +321,7 @@ router.put('/:id', protect, async (req, res) => {
 // @access  Private
 router.delete('/:id', protect, async (req, res) => {
   try {
+    await autoCompleteBookings();
     const booking = await Booking.findById(req.params.id);
 
     if (!booking) {
@@ -318,6 +342,13 @@ router.delete('/:id', protect, async (req, res) => {
     // Update status to cancelled instead of deleting
     booking.status = 'Cancelled';
     await booking.save();
+
+    // Set car availability back to true
+    const car = await Car.findById(booking.car);
+    if (car) {
+      car.availability.isAvailable = true;
+      await car.save();
+    }
 
     res.status(200).json({
       success: true,

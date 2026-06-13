@@ -37,5 +37,6 @@ Thumbs.db
 # Project-specific paths
 backend/uploads/*
 !backend/uploads/.gitkeep
+!backend/uploads/cars/
 backend/backups/*
 !backend/backups/.gitkeep
